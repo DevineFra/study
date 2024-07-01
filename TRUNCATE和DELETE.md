@@ -37,12 +37,3 @@ Next-Key Locks：在可重复读（Repeatable Read）隔离级别下，为了防
 * drop table table_name 立刻释放磁盘空间，不管是 InnoDB 和 MyISAM;
 * drop 语句将删除表的结构被依赖的约束(constrain)、触发器(trigger)、索引(index);
 * 依赖于该表的存储过程/函数将保留,但是变为 invalid 状态。
-
-
-
-
-
-
-# DROP
-
-
