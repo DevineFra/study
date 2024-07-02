@@ -38,7 +38,8 @@ PARTITION BY LIST(store_id) (
     PARTITION pEast VALUES IN (101, 103, 105),   
     PARTITION pWest VALUES IN (102, 104, 106),   
     PARTITION pNorth VALUES IN (107, 109, 111),   
-    PARTITION pSouth VALUES IN (108, 110, 112));
+    PARTITION pSouth VALUES IN (108, 110, 112)
+);
 ``` 
 
 ### 子分区
@@ -71,18 +72,14 @@ SUBPARTITIONS 4 (
 
 ## 语法
 ```sql
-CREATE [OR REPLACE] TRIGGER trigger_name triggering_statement
-  [trigger_restriction]
-BEGIN
- triggered_action;
-END
-
-triggering_statement:
-  {BEFORE | AFTER }
-  {INSERT | DELETE | UPDATE [OF column [, column ...]]}
-  ON [schema.] table_name 
-  [REFERENCING {OLD [AS] old | NEW [AS] new| PARENT as parent}]
-  FOR EACH ROW
-  [WHEN condition]
-  [FOLLOWS | PRECEDES] other_trigger_name
+DELIMITER $$
+create [or replace] trigger trigger_name BEFORE|AFTER trigger_EVENT 
+ON TABLE_NAME FOR EACH ROW 
+BEGIN                                                        
+   on_trigger_sql1; 
+   on_trigger_sql2; 
+   更多sql语句...                                      
+END; 
+$$
+DELIMITER ; 
 ```
