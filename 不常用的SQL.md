@@ -1,6 +1,7 @@
 # 分区
 ## 语法
 ### RANGE
+```sql
 CREATE TABLE Sales ( cust_id INT NOT NULL, name VARCHAR(40),   
 store_id VARCHAR(20) NOT NULL, bill_no INT NOT NULL,   
 bill_date DATE PRIMARY KEY NOT NULL, amount DECIMAL(8,2) NOT NULL)   
@@ -8,10 +9,11 @@ PARTITION BY RANGE (year(bill_date))(
 PARTITION p0 VALUES LESS THAN (2016),   
 PARTITION p1 VALUES LESS THAN (2017),   
 PARTITION p2 VALUES LESS THAN (2018),   
-PARTITION p3 VALUES LESS THAN (2020));  
-* 分区键必须是整数值
+PARTITION p3 VALUES LESS THAN (2020));
+```
 
 ### HASH
+```sql
 CREATE TABLE Stores (   
     cust_name VARCHAR(40),   
     bill_no VARCHAR(20) NOT NULL,   
@@ -20,9 +22,11 @@ CREATE TABLE Stores (
     amount DECIMAL(8,2) NOT NULL  
 )  
 PARTITION BY HASH(store_id)  
-PARTITIONS 4;  
+PARTITIONS 4;
+```
 
 ### LIST
+```sql
 CREATE TABLE Stores (   
     cust_name VARCHAR(40),   
     bill_no VARCHAR(20) NOT NULL,   
@@ -31,24 +35,28 @@ CREATE TABLE Stores (
     amount DECIMAL(8,2) NOT NULL 
 )
 PARTITION BY LIST(store_id) (   
-PARTITION pEast VALUES IN (101, 103, 105),   
-PARTITION pWest VALUES IN (102, 104, 106),   
-PARTITION pNorth VALUES IN (107, 109, 111),   
-PARTITION pSouth VALUES IN (108, 110, 112));  
+    PARTITION pEast VALUES IN (101, 103, 105),   
+    PARTITION pWest VALUES IN (102, 104, 106),   
+    PARTITION pNorth VALUES IN (107, 109, 111),   
+    PARTITION pSouth VALUES IN (108, 110, 112));
+``` 
 
 ### 子分区
+```sql
 CREATE TABLE table10 (BILL_NO INT, sale_date DATE, cust_code VARCHAR(15), AMOUNT DECIMAL(8,2))  
 PARTITION BY RANGE(YEAR(sale_date) )  
 SUBPARTITION BY HASH(TO_DAYS(sale_date))  
 SUBPARTITIONS 4 (  
-PARTITION p0 VALUES LESS THAN (1990),  
-PARTITION p1 VALUES LESS THAN (2000),  
-PARTITION p2 VALUES LESS THAN (2010),  
-PARTITION p3 VALUES LESS THAN MAXVALUE  
-);  
+    PARTITION p0 VALUES LESS THAN (1990),  
+    PARTITION p1 VALUES LESS THAN (2000),  
+    PARTITION p2 VALUES LESS THAN (2010),  
+    PARTITION p3 VALUES LESS THAN MAXVALUE  
+);
+```
 
 
 ## 注意事项
+* range/hash分区键必须是整数值
 * 分区键必须是主键的一部分，保证主键查询的时候可以直接定位到分区
 
 # 触发器
@@ -69,7 +77,7 @@ BEGIN
  triggered_action;
 END
 
-triggering_statementL:
+triggering_statement:
   {BEFORE | AFTER }
   {INSERT | DELETE | UPDATE [OF column [, column ...]]}
   ON [schema.] table_name 
