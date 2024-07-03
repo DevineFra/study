@@ -55,34 +55,10 @@ SUBPARTITIONS 4 (
 );
 ```
 
-
 ## 注意事项
 * range/hash分区键必须是整数值
 * 分区键必须是主键的一部分，保证主键查询的时候可以直接定位到分区
 
-# 触发器
-触发器，就是一种特殊的存储过程。 触发器和存储过程一样是一个能够完成特定功能，存储在数据库服务器上的SQL片段。但是触发器无需调用，当对数据库中的数据执行DML操作时会自动触发这个SQL片段的执行，无需手动调用。  
-
-## 触发器类型
-* 行级触发器  
-行级触发器创建在实体表上，每次表受到触发语句影响时会触发一个行级触发器。例如，一条语句更新多行数据，每条受影响的数据都会触发一次触发器。如果触发语句不影响任何行数据，则不会运行触发器。
-
-* 语句级触发器  
-语句级触发器创建在实体表上，每次执行触发语句时都会自动触发一次，无论该触发语句是否影响了表中的任何行数据。例如，一条语句更新了表中的 100 条数据，则语句级 UPDATE 触发器仅触发一次。
-
-## 语法
-```sql
-delimiter $$
-create [or replace] trigger trigger_name BEFORE|AFTER trigger_EVENT 
-ON TABLE_NAME FOR EACH ROW 
-BEGIN                                                        
-   on_trigger_sql1; 
-   on_trigger_sql2; 
-   更多sql语句...                                      
-END; 
-$$
-delimiter ; 
-```
 
 # PL/SQL
 ## 语法结构
@@ -206,7 +182,8 @@ return expr
 * 存储函数中必须至少有一个 RETURN 语句。如果函数有多个退出点，则可能有多个 RETURN 语句。  
 * 存储过程和触发器不使用 RETURN 语句，而是使用 LEAVE 语句退出程序。  
 
-
+## 应用-存储过程
+### 语法结构
 ```sql
 delimiter //
 create [or replace] PROCEDURE 过程名( in|out|inout 参数名 数据类型 , ...)
@@ -217,4 +194,24 @@ begin
 end //
 delimiter ;
 call 过程名(参数值);
+```
+
+## 应用-触发器
+### 语法结构
+## 语法
+```sql
+delimiter $$
+create [or replace] trigger trigger_name BEFORE|AFTER trigger_EVENT 
+ON TABLE_NAME FOR EACH ROW 
+BEGIN                                                        
+   on_trigger_sql1; 
+   on_trigger_sql2; 
+   更多sql语句...                                      
+END; 
+$$
+delimiter ; 
+```
+
+## 例子
+```
 ```
