@@ -84,21 +84,17 @@ $$
 delimiter ; 
 ```
 
-# 存储过程
+# PL/SQL
 ## 语法结构
-```sql
-delimiter //
-create [or replace] PROCEDURE 过程名( in|out|inout 参数名 数据类型 , ...)
-begin
-  sql语句;
-[exception]
-  exception_handler
-end //
-delimiter ;
-call 过程名(参数值);
+```
+BEGIN
+  declare ...
+  sql_statement
+END
 ```
 * declare声明变量必须再begin ... end块中
-* 标签可用于begin ... end块中的loop/repeat/while [begin_label:] loop/ end loop[end_label] 
+* 标签可用于begin ... end块中的loop/repeat/while [begin_label:] loop/ end loop[end_label]
+* 块标签的范围不包括块内声明的处理程序的代码。
 
 ## 游标
 ### 语法结构
@@ -113,5 +109,112 @@ fetch cursor_name into var_name[, var_name]
 close cursor_name
 ```
 
-##
+## 异常处理
+### DECLARE ... CONDITION
+用于声明异常条件并为其命名，condition_name可以供给后面declare handler中引用
+```sql
+DECLARE condition_name CONDITION FOR condition_value
 
+condition_value: {
+    mysql_error_code
+  | SQLSTATE [VALUE] sqlstate_value
+}
+
+```
+
+### DECLARE ... HANDLER
+用于指定处理一个或多个异常条件的处理程序。如果出现某一条件，就会执行指定的语句。  
+```sql
+DECLARE handler_action HANDLER
+    FOR condition_value [, condition_value] ...
+    sql_statement
+
+handler_action: {
+    CONTINUE 继续执行
+  | EXIT 退出
+  | UNDO 不支持
+}
+condition_value: {
+    mysql_error_code 整数错误码
+  | SQLSTATE [VALUE] sqlstate_value
+  | condition_name
+  | SQLWARNING
+  | NOT FOUND
+  | SQLEXCEPTION
+}
+```
+
+## 条件控制语句
+### case
+```sql
+CASE case_value
+    WHEN when_value THEN statement_list
+    [WHEN when_value THEN statement_list] ...
+    [ELSE statement_list]
+END CASE
+
+CASE
+    WHEN search_condition THEN statement_list
+    [WHEN search_condition THEN statement_list] ...
+    [ELSE statement_list]
+END CASE
+```
+* 第一种写法使用case_calue与每个when进行比较，相等则执行stateement_list
+* 第二种写法对每个when后的search_condition进行处理判断是否结果为True，则执行statement_list
+
+### if
+```sql
+IF search_condition THEN statement_list
+    [ELSEIF search_condition THEN statement_list] ...
+    [ELSE statement_list]
+END IF
+```
+
+### iterate
+```sql
+iterate label
+```
+再次启动循环语句，iterate只能出现在loop、repeat、while
+
+### leave
+```sql
+leave label
+```
+用于跳出流程控制语句，只能出现在loop、repeat、while
+
+### 循环
+```sql
+[begin_label:] LOOP
+    statement_list
+END LOOP [end_label]
+
+[begin_label:] REPEAT
+    statement_list
+UNTIL search_condition
+END REPEAT [end_label]
+
+[begin_label:] WHILE search_condition DO
+    statement_list
+END WHILE [end_label]
+
+```
+
+### 退出
+```sql
+return expr
+```
+* 存储函数中必须至少有一个 RETURN 语句。如果函数有多个退出点，则可能有多个 RETURN 语句。  
+* 存储过程和触发器不使用 RETURN 语句，而是使用 LEAVE 语句退出程序。  
+
+
+```sql
+delimiter //
+create [or replace] PROCEDURE 过程名( in|out|inout 参数名 数据类型 , ...)
+begin
+  sql语句;
+[exception]
+  exception_handler
+end //
+delimiter ;
+call 过程名(参数值);
+```
