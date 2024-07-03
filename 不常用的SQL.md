@@ -72,7 +72,7 @@ SUBPARTITIONS 4 (
 
 ## 语法
 ```sql
-DELIMITER $$
+delimiter $$
 create [or replace] trigger trigger_name BEFORE|AFTER trigger_EVENT 
 ON TABLE_NAME FOR EACH ROW 
 BEGIN                                                        
@@ -81,5 +81,37 @@ BEGIN
    更多sql语句...                                      
 END; 
 $$
-DELIMITER ; 
+delimiter ; 
 ```
+
+# 存储过程
+## 语法结构
+```sql
+delimiter //
+create [or replace] PROCEDURE 过程名( in|out|inout 参数名 数据类型 , ...)
+begin
+  sql语句;
+[exception]
+  exception_handler
+end //
+delimiter ;
+call 过程名(参数值);
+```
+* declare声明变量必须再begin ... end块中
+* 标签可用于begin ... end块中的loop/repeat/while [begin_label:] loop/ end loop[end_label] 
+
+## 游标
+### 语法结构
+```sql
+创建
+declare cursor_name cursor for select_statement
+打开
+open cursor_name
+获取下一行
+fetch cursor_name into var_name[, var_name]
+关闭游标
+close cursor_name
+```
+
+##
+
