@@ -213,5 +213,29 @@ delimiter ;
 ```
 
 ## 例子
-```
+```sql
+delimiter //
+create procedure demo(in t1 integer, inout t2 varchar(32))
+begin
+  declare unknown_column condition for sqlstate '42S22';
+  declare done bool default false;
+  declare x integer;
+  declare y varchar(32);
+  declare cur1 cursor for select salary, info from emp;
+  declare continue handler for not found set done = true;
+  declare exit handler for unknown_column set done = true;
+  open cur1;
+  read_loop: loop
+    fetch cur1 into x, y;
+    if done then
+      leave read_loop;
+    end if;
+    if y != t2 then
+      set y = concat(y, t2);
+    end if;
+    insert into sal(salary, inf, tag) values (x, y, t1);
+  end loop;
+  close cur1;
+end //
+delimiter ;
 ```
