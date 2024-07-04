@@ -68,9 +68,43 @@ BEGIN
   sql_statement
 END
 ```
-* declare声明变量必须再begin ... end块中
 * 标签可用于begin ... end块中的loop/repeat/while [begin_label:] loop/ end loop[end_label]
 * 块标签的范围不包括块内声明的处理程序的代码。
+
+## 变量
+### 局部变量
+```sql
+#声明
+declare var_name type [default var_value]
+#赋值
+set var_name = var_value
+select filed into var_name, [var_name] from xxxx
+
+```
+* declare声明变量必须再begin ... end块中
+
+### 用户变量
+```sql
+# 赋值
+set @var_name = var_value
+# 查询
+select @var_name
+```
+* 用户变量不需要提前声明，使用即为声明
+
+### 会话变量
+```sql
+# 赋值
+set @@var_name = var_value
+# 查询
+select @@var_name
+```
+
+### 全局变量
+```sql
+select @@global.var_name
+```
+
 
 ## 游标
 ### 语法结构
