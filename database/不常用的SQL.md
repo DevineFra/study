@@ -59,7 +59,6 @@ SUBPARTITIONS 4 (
 * range/hash分区键必须是整数值
 * 分区键必须是主键的一部分，保证主键查询的时候可以直接定位到分区
 
-
 # PL/SQL
 ## 语法结构
 ```
@@ -104,7 +103,6 @@ select @@var_name
 ```sql
 select @@global.var_name
 ```
-
 
 ## 游标
 ### 语法结构
@@ -272,4 +270,17 @@ begin
   close cur1;
 end //
 delimiter ;
+```
+
+# Prepared Statement
+## 语法结构
+```sql
+set @sql = "select xx from xxx where id = ?"
+# 准备
+prepare stmt_name from @sql
+# 执行
+set @var_name = xxx
+execute stmt_name using @var_name
+# 释放
+deallocate prepare stmt_name
 ```
