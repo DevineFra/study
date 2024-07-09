@@ -83,6 +83,10 @@ CREATE [UNIQUE] INDEX [CONCURRENTLY] indx_name ON table_name(column);
 CREATE [UNIQUE] INDEX [CONCURRENTLY] indx_name ON table_name USING index_type(column);
 ```
 
-##
+## 类型转换
+cast(col as newtype)
+col::newtype
+
+## 
 
 
