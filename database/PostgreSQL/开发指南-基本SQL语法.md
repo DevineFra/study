@@ -87,6 +87,20 @@ CREATE [UNIQUE] INDEX [CONCURRENTLY] indx_name ON table_name USING index_type(co
 cast(col as newtype)
 col::newtype
 
-## 
+## 自定义函数
+```sql
+CREATE [ OR REPLACE ] FUNCTION function_name ( [ argument_name data_type [, ...] ] )
+RETURNS return_data_type
+AS $$
+-- 函数体，可以是SQL语句或者PL/pgSQL代码
+BEGIN
+   -- 函数执行的逻辑
+   ...
+END;
+$$ LANGUAGE plpgsql;
+```
+
+## 高级SQL
+### with ordinary
 
 
